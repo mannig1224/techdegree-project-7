@@ -1,26 +1,49 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { Component } from 'react';
+import './css/index.css';
+import axios from 'axios';
+import {
+  BrowserRouter,
+  Route
+} from 'react-router-dom';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+import Nav from './components/Nav';
+import SearchForm from './components/SearchForm';
+import Gallery from './components/Gallery';
+
+class App extends Component {
+  
+  constructor() {
+    super();
+    this.state = {
+      gifs: []
+    };
+  } 
+
+  componentDidMount() {
+    axios.get('http://api.giphy.com/v1/gifs/trending?api_key=dc6zaTOxFJmzC')
+      .then(response => {
+        this.setState({
+          gifs: response.data.data
+        });
+      })
+      .catch(error => {
+        console.log('Error fetching and parsing data', error);
+      });
+  }
+
+  render() { 
+    console.log(this.state.gifs);
+    return (
+      <BrowserRouter>
+        <div className="container">
+          <SearchForm />
+          <Nav />
+          <Gallery />
+
+        </div>
+
+      </BrowserRouter>
+      
+    );
+  }
 }
-
-export default App;
