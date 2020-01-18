@@ -46,15 +46,15 @@ class App extends Component {
       <BrowserRouter>
         <div className="container">
           <SearchForm onSearch={this.performSearch}/>
-          <Nav />
+          <Nav onClick={this.performSearch}/>
           <Switch>
             <Route exact path = "/" render={() => 
             <Redirect to = '/search/cats' />} />
             <Route path ="/search/:name" 
-            render={(props, {match}) =>
+            render={(props) =>
               (this.state.loading)
               ? <p>Loading...</p>
-              : <Gallery data={this.state.photos}/>
+              : <Gallery data={this.state.photos} {...props}/>
             } />
             <Route component={PageNotFound} />
           </Switch>

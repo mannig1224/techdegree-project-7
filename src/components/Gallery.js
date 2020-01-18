@@ -3,11 +3,11 @@ import React from 'react';
 import Photo from './Photo';
 import NotFound from './NotFound';
 
-const Gallery = (props, {match}) => {
+const Gallery = (props) => {
 
     const results = props.data;
     let photos;
-    let query = match.params.name;
+    let query = props.match.params.name;
         if(results.length > 0) {
             photos = results.map(photo =>
                 <Photo 
@@ -22,7 +22,7 @@ const Gallery = (props, {match}) => {
     
     return(
         <div className="photo-container">
-        <h2>Results of </h2>
+        <h2>Results of {query} </h2>
             <ul>
                 {photos}                
             </ul>
