@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { createBrowserHistory } from "history";
 import './css/index.css';
 import axios from 'axios';
 import {
@@ -24,7 +25,10 @@ class App extends Component {
     };
   } 
   componentDidMount() {
-    this.performSearch();
+    const history = createBrowserHistory();
+    let query = history.location.pathname.replace(/[^\w\s]/gi, '').replace("search", '');
+    console.log(history);
+    this.performSearch(query);
   }
   performSearch = (query = 'cats') => {
     axios.get(`https://www.flickr.com/services/rest/?method=flickr.photos.search&api_key=${apiKey}&tags=${query}&per_page=24&format=json&nojsoncallback=1`)
@@ -45,17 +49,22 @@ class App extends Component {
     return (
       <BrowserRouter>
         <div className="container">
-          <SearchForm onSearch={this.performSearch}/>
+          <Route render={(props)=>
+            <SearchForm onSearch={this.performSearch} {...props}/>
+          } />
           <Nav onClick={this.performSearch}/>
           <Switch>
+          
             <Route exact path = "/" render={() => 
             <Redirect to = '/search/cats' />} />
+  
             <Route path ="/search/:name" 
             render={(props) =>
               (this.state.loading)
               ? <p>Loading...</p>
               : <Gallery data={this.state.photos} {...props}/>
             } />
+
             <Route component={PageNotFound} />
           </Switch>
             
