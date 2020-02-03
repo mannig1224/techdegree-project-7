@@ -36,11 +36,11 @@ class App extends Component {
   // This function calls the api using the api key from the config component and the parameter passed from component did mount
   // If no parameter is specified the default value is cat
   performSearch = (query = 'cats') => {
+    this.setState ({ loading: false});
     axios.get(`https://www.flickr.com/services/rest/?method=flickr.photos.search&api_key=${apiKey}&tags=${query}&per_page=24&format=json&nojsoncallback=1`)
     .then(response => {
       this.setState({
         photos: response.data.photos.photo,
-        loading: false
       });
     })
     .catch(error => {
